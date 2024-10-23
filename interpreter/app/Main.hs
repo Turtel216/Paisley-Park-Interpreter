@@ -18,9 +18,9 @@ symbol = oneOf "!#$%&|*+-/:<=>?@^_~"
 
 parseString :: Parser LispVal
 parseString = do
-  char '"'
+  _ <- char '"'
   x <- many (noneOf "\"")
-  char '"'
+  _ <- char '"'
   return $ String x
 
 parseAtom :: Parser LispVal
@@ -36,10 +36,16 @@ parseAtom = do
 parseNumber :: Parser LispVal
 parseNumber = liftM (Number . read) $ many1 digit
 
+parseExpr :: Parser LispVal
+parseExpr =
+  parseAtom
+    <|> parseString
+    <|> parseNumber
+
 readExpr :: String -> String
-readExpr input = case parse (spaces >> symbol) "lisp" input of
+readExpr input = case parse parseExpr "lisp" input of
   Left err -> "No match: " ++ show err
-  Right val -> "Found value"
+  Right _ -> "Found value"
 
 spaces :: Parser ()
 spaces = skipMany1 space
