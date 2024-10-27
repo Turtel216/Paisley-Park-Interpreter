@@ -1,72 +1,99 @@
-module Parser where
+module Parser
+  ( readExpr,
+    readExprFile,
+  )
+where
 
-import Control.Monad (liftM)
-import System.Environment
-import Text.ParserCombinators.Parsec hiding (spaces)
+import Control.Applicative hiding ((<|>))
+import Data.Functor.Identity (Identity)
+import qualified Data.Text as T
+import LispVal
+import Text.Parsec
+import Text.Parsec.Expr
+import qualified Text.Parsec.Language as Lang
+import Text.Parsec.Text
+import qualified Text.Parsec.Token as Tok
 
--- Data type holding any Scheme Value
-data LispVal
-  = Atom String
-  | List [LispVal]
-  | DottedList [LispVal] LispVal
-  | Number Integer
-  | String String
-  | Bool Bool
+lexer :: Tok.GenTokenParser T.Text () Identity
+lexer = Tok.makeTokenParser style
 
-symbol :: Parser Char
-symbol = oneOf "!#$%&|*+-/:<=>?@^_~"
+style :: Tok.GenLanguageDef T.Text () Identity
+style =
+  Lang.emptyDef
+    { Tok.commentStart = "{-",
+      Tok.commentEnd = "-}",
+      Tok.commentLine = "--",
+      Tok.opStart = Tok.opLetter style,
+      Tok.opLetter = oneOf ":!#$%%&*+./<=>?@\\^|-~",
+      Tok.identStart = letter <|> oneOf "-+/*=|&><",
+      Tok.identLetter = digit <|> letter <|> oneOf "?+=|&-/",
+      Tok.reservedOpNames = ["'", "\""]
+    }
 
-parseString :: Parser LispVal
-parseString = do
-  _ <- char '"'
-  x <- many (noneOf "\"")
-  _ <- char '"'
-  return $ String x
+reservedOp :: T.Text -> Parser ()
+reservedOp op = Tok.reservedOp lexer $ T.unpack op
 
-parseAtom :: Parser LispVal
-parseAtom = do
-  first <- letter <|> symbol
-  rest <- many (letter <|> digit <|> symbol)
-  let atom = first : rest
-  return $ case atom of
-    "#t" -> Bool True
-    "#f" -> Bool False
-    _ -> Atom atom
+parseText :: Parser LispVal
+parseText = do
+  reservedOp "\""
+  p <- many1 $ noneOf "\""
+  reservedOp "\""
+  return $ String . T.pack $ p
 
 parseNumber :: Parser LispVal
-parseNumber = liftM (Number . read) $ many1 digit
+parseNumber = Number . read <$> many1 digit
+
+parseNegNum :: Parser LispVal
+parseNegNum = do
+  char '-'
+  d <- many1 digit
+  return $ Number . negate . read $ d
 
 parseList :: Parser LispVal
-parseList = liftM List $ sepBy parseExpr spaces
+parseList =
+  List . concat
+    <$> Text.Parsec.many parseExpr
+      `sepBy` (char ' ' <|> char '\n')
 
-parseDottedList :: Parser LispVal
-parseDottedList = do
-  head <- endBy parseExpr spaces
-  tail <- char '.' >> spaces >> parseExpr
-  return $ DottedList head tail
+parseSExp =
+  List . concat
+    <$> m_parens
+      ( Text.Parsec.many parseExpr
+          `sepBy` (char ' ' <|> char '\n')
+      )
 
-parseQuoted :: Parser LispVal
-parseQuoted = do
-  _ <- char '\''
+parseQuote :: Parser LispVal
+parseQuote = do
+  reservedOp "\'"
   x <- parseExpr
   return $ List [Atom "quote", x]
 
+parseReserved :: Parser LispVal
+parseReserved =
+  do
+    reservedOp "Nil" >> return Nil
+    <|> (reservedOp "#t" >> return (Bool True))
+    <|> (reservedOp "#f" >> return (Bool False))
+
 parseExpr :: Parser LispVal
 parseExpr =
-  parseAtom
-    <|> parseString
+  parseReserved
     <|> parseNumber
-    <|> parseQuoted
-    <|> do
-      _ <- char '('
-      x <- try parseList <|> parseDottedList
-      _ <- char ')'
-      return x
+    <|> try parseNegNum
+    <|> parseAtom
+    <|> parseText
+    <|> parseQuote
+    <|> parseSExp
 
-readExpr :: String -> String
-readExpr input = case parse parseExpr "lisp" input of
-  Left err -> "No match: " ++ show err
-  Right _ -> "Found value"
+contents :: Parser a -> Parser a
+contents p = do
+  Tok.whiteSpace lexer
+  r <- p
+  eof
+  return r
 
-spaces :: Parser ()
-spaces = skipMany1 space
+readExpr :: T.Text -> Either ParseError LispVal
+readExpr = parse (contents parseExpr) "<stdin>"
+
+readExprFile :: T.Text -> Either ParseError LispVal
+readExprFile = parse (contents parseList) "<file>"
