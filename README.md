@@ -59,9 +59,49 @@ This list of functions is not complete. For a full Scheme specification, see The
 
 ## The Paisley-Park-Interpreter
 
-### Usage 
+### Installation
 
-### Building The Project
+This project uses Cabal as its build tool. Follow these steps to build and run the project:
 
 #### Prerequisites
 
+1. **Install GHC** (the Glasgow Haskell Compiler):
+    - [Download and install GHC](https://www.haskell.org/downloads/) if you haven't already.
+
+2. **Install Caba**:
+    - Follow the instructions on the [Haskell.org website](https://www.haskell.org/cabal/) to download and set up Cabal.
+    - Confirm the installation by running:
+    ```bash
+    cabal --version
+    ```
+
+#### Building the Project 
+
+1. **Clone the Repository**:
+
+```bash
+git clone https://github.com/Turtel216/Paisley-Park-Interpreter.github
+cd Paisley-Park-Interpreter
+```
+
+2. **Install Dependencies**: Run the following command to download and install the necessary dependencies
+
+```bash 
+cabal update
+```
+
+3. **Build the Project**:
+
+    - Run the build command:
+    ```bash 
+    cabal build
+    ```
+    - Cabal will compile the source code and place the executable(s) in the dist-newstyle directory.
+
+4. **Running the Project**: After a successful build, run the project with 
+
+```bash 
+cabal run
+```
+
+### Usage 
