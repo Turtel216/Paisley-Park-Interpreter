@@ -1,14 +1,12 @@
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Eval
   ( evalText,
     evalFile,
     runParseTest,
     safeExec,
-    -- testing
-    runASTinEnv,
-    basicEnv,
-    fileToEvalForm,
-    textToEvalForm,
-    getFileContents,
   )
 where
 

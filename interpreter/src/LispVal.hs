@@ -1,3 +1,5 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
 module LispVal
   ( LispVal (..),
     Eval (..),

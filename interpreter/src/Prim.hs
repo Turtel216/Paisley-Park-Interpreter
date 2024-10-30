@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Prim (primEnv, unop) where
 
 import Control.Exception (throw)
