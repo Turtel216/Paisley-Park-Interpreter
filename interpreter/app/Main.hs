@@ -1,4 +1,4 @@
-module Main where
+import qualified Cli
 
 main :: IO ()
-main = print "Hello Scheme"
+main = Cli.cliIface
