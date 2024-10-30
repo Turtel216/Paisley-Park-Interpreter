@@ -2,10 +2,10 @@ cabal-version:   2.4
 name:            ppi
 version:         0.1
 description:     A Scheme interpreter written in Haskell
-author: Dimitrios Papakonstantinou
-maintainer: Dimitrios Papakonstantinou <papakonstantinou.dm@gmail.com>
-license: MIT 
-license-file: LICENSE 
+author:          Dimitrios Papakonstantinou
+maintainer:      Dimitrios Papakonstantinou <papakonstantinou.dm@gmail.com>
+license:         MIT 
+license-file:    LICENSE 
 build-type:      Simple
 extra-doc-files:
   README.md
