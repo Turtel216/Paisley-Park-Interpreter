@@ -17,7 +17,7 @@ This project uses Cabal as its build tool. Follow these steps to build and run t
 1. **Install GHC** (the Glasgow Haskell Compiler):
     - [Download and install GHC](https://www.haskell.org/downloads/) if you haven't already.
 
-2. **Install Caba**:
+2. **Install Cabal**:
     - Follow the instructions on the [Haskell.org website](https://www.haskell.org/cabal/) to download and set up Cabal.
     - Confirm the installation by running:
       
