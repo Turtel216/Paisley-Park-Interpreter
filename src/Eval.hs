@@ -7,6 +7,12 @@ module Eval
     evalFile,
     runParseTest,
     safeExec,
+    -- testing
+    runASTinEnv,
+    basicEnv,
+    fileToEvalForm,
+    textToEvalForm,
+    getFileContents,
   )
 where
 
