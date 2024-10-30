@@ -63,7 +63,7 @@ This list of functions is not complete. For a full Scheme specification, see The
 
 This project uses Cabal as its build tool. Follow these steps to build and run the project:
 
-#### Prerequisites
+### Prerequisites
 
 1. **Install GHC** (the Glasgow Haskell Compiler):
     - [Download and install GHC](https://www.haskell.org/downloads/) if you haven't already.
@@ -75,7 +75,7 @@ This project uses Cabal as its build tool. Follow these steps to build and run t
     cabal --version
     ```
 
-#### Building the Project 
+### Building the Project 
 
 1. **Clone the Repository**:
 
@@ -98,10 +98,22 @@ cabal update
     ```
     - Cabal will compile the source code and place the executable(s) in the dist-newstyle directory.
 
-4. **Running the Project**: After a successful build, run the project with 
+4. **Test the interpreter**: After a successful build, test the project with 
 
 ```bash 
-cabal run
+cabal test
 ```
 
 ### Usage 
+
+1. To run the Repl tool use:
+
+```bash 
+cabal exec ppi -- -r
+```
+
+2. To run a script use:
+
+```bash
+cabal exec ppi -- -s name.scm
+```
