@@ -1,6 +1,11 @@
 cabal-version:   2.4
-name:            scheme
+name:            ppi
 version:         0.1
+description:     A Scheme interpreter written in Haskell
+author: Dimitrios Papakonstantinou
+maintainer: Dimitrios Papakonstantinou <papakonstantinou.dm@gmail.com>
+license: MIT 
+license-file: LICENSE 
 build-type:      Simple
 extra-doc-files:
   README.md
@@ -13,8 +18,8 @@ source-repository head
 
 common common-options
   build-depends:      base >=4.8 && <5.0
-  other-modules:      Paths_scheme
-  autogen-modules:    Paths_scheme
+  other-modules:      Paths_ppi
+  autogen-modules:    Paths_ppi
   ghc-options:
     -Wall -Wextra -Wcompat -Widentities
     -Wincomplete-uni-patterns -Wincomplete-record-updates
@@ -61,19 +66,12 @@ library
     , parsec
     , text
 
-executable docs
-  import:        common-options
-  main-is:       Build.hs
-  build-depends:
---    , pandoc
-    , shake
-
-executable scheme
+executable ppi
   import:         common-options
   main-is:        Main.hs
-  hs-source-dirs: exec
+  hs-source-dirs: app
   ghc-options:    -threaded -rtsopts -with-rtsopts=-N
-  build-depends:  scheme
+  build-depends:  ppi
 
 test-suite test
   import:         common-options
@@ -83,20 +81,20 @@ test-suite test
   ghc-options:    -threaded -rtsopts -with-rtsopts=-N
   build-depends:
     , hspec
-    , scheme
+    , ppi
     , text
 
 test-suite test-golden
   import:          common-options
   type:            exitcode-stdio-1.0
   main-is:         Main.hs
-  other-modules:   Paths_scheme
-  autogen-modules: Paths_scheme
+  other-modules:   Paths_ppi
+  autogen-modules: Paths_ppi
   hs-source-dirs:  test-hs/Golden
   ghc-options:     -threaded -rtsopts -with-rtsopts=-N
   build-depends:
     , bytestring
-    , scheme
+    , ppi
     , tasty
     , tasty-golden
     , text
