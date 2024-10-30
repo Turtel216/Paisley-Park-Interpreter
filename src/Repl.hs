@@ -25,7 +25,7 @@ mainLoop = runInputT defaultSettings repl
 
 repl :: Repl ()
 repl = do
-  minput <- getInputLine "Repl> "
+  minput <- getInputLine "λ> "
   case minput of
     Nothing -> outputStrLn "Goodbye."
     Just input -> liftIO (process input) >> repl
