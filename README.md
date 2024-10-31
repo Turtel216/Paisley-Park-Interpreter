@@ -119,4 +119,4 @@ cons … (cons 1 '(2 3)) => (1 2 3)
 (begin (define x 413000) (define y (+ x 281)) (+ x y)) => 826281
 ```
 
-This list of functions is not complete. For a full Scheme specification, see The [R5RS Specification](https://github.com/write-you-a-scheme-v2/scheme/blob/master/sources/r5rs.pdf)
+This list of functions is not complete, a full list of the implemented **stdlib** can be found under [./lib](https://github.com/Turtel216/Paisley-Park-Interpreter/tree/main/lib). For a full Scheme specification, see The [R5RS Specification](https://github.com/write-you-a-scheme-v2/scheme/blob/master/sources/r5rs.pdf)
