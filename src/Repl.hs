@@ -27,8 +27,8 @@ repl :: Repl ()
 repl = do
   minput <- getInputLine "λ> "
   case minput of
-    Nothing -> outputStrLn "Goodbye."
-    Just ":quit" -> outputStrLn "Quite Interpreter"
+    Nothing -> outputStrLn "Invalid input. Goodbye."
+    Just ":quit" -> outputStrLn "Leaving PPI"
     Just input -> liftIO (process input) >> repl
 
 -- Just input -> (liftIO $ processToAST input) >> repl
