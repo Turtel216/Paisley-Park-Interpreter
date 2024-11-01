@@ -25,6 +25,9 @@ This project uses Cabal as its build tool. Follow these steps to build and run t
     cabal --version
     ```
 
+> [!TIP]
+> The easiest way to install all prerequisites is using [GHCup](https://www.haskell.org/ghcup/)
+
 ### Building the Project 
 
 1. **Clone the Repository**:
