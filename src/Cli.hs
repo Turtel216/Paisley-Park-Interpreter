@@ -72,6 +72,6 @@ cliIface = execParser opts >>= schemeEntryPoint
       info
         (helper <*> parseLineOpts)
         ( fullDesc
-            <> header "Executable binary for Write You A Scheme v2.0"
+            <> header "Scheme Interpreter Executable"
             <> progDesc "contains an entry point for both running scripts and repl"
         )
